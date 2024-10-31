@@ -54,7 +54,7 @@ export default function Home() {
         <CardHeader className="flex flex-row items-center justify-between bg-[#dafe48] rounded-t-lg">
           <CardTitle className="text-xl flex items-center gap-2 font-extrabold">
             <Bell className="w-5 h-5" />
-            알림 설정
+            Vuddy 알림 설정
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
