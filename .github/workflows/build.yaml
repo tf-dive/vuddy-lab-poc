@@ -14,6 +14,8 @@ jobs:
 
     strategy:
       matrix:
+        app:
+          - vuddy-lab-poc
         node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
@@ -33,20 +35,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Docker meta
+      - name: Build metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v4
         with:
-          images: |
-            ghcr.io/tf-dive/vuddy-lab-poc
+          images: ghcr.io/tf-dive/${{ matrix.app }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-          labels: |
-            org.opencontainers.image.description="Vuddy Lab POC"
-            org.opencontainers.image.source=https://github.com/tf-dive/vuddy-lab-poc
+            type=raw,value=dev
+            type=semver,pattern={{ version }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -55,13 +51,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker build and push
+      - name: Build image and publish to registry
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64
           push: true
-          tags: ghcr.io/tf-dive/vuddy-lab-poc:${{ env.DOCKER_TAG }}
+          file: Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            GIT_REV=${{ github.sha }}
