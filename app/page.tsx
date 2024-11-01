@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell } from 'lucide-react';
+import { ArrowRight, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +23,7 @@ const creators = [
 
 export default function Home() {
   const { toast } = useToast();
-  const [selectedCreator, setSelectedCreator] = useState<number | null>(null);
+  const [selectedCreator, setSelectedCreator] = useState<number | null>(1);
   const [notifications, setNotifications] = useState({
     streamStart: false,
     titleChange: false,
@@ -49,7 +49,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#5c6bf6] to-white p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#5c6bf6] to-white p-4 flex flex-col items-center justify-center">
       <Card className="w-full max-w-[1000px]">
         <CardHeader className="flex flex-row items-center justify-between bg-[#dafe48] rounded-t-lg">
           <CardTitle className="text-xl flex items-center gap-2 font-extrabold">
@@ -61,7 +61,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Creators Grid */}
             <div className="space-y-4">
-              <h3 className="font-medium font-extrabold">크리에이터 선택</h3>
+              <h3 className="font-medium font-bold">크리에이터 선택</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {creators.map((creator) => (
                   <button
@@ -91,7 +91,7 @@ export default function Home() {
             {/* Notification Settings */}
             <div className="space-y-6">
               <div className="space-y-4">
-                <h3 className="font-medium font-extrabold">
+                <h3 className="font-medium font-bold">
                   {selectedCreator
                     ? creators.find((creator) => creator.id === selectedCreator)
                         ?.name
