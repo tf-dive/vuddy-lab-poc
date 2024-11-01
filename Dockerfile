@@ -8,7 +8,6 @@ RUN npm install
 COPY public ./public
 COPY app ./app
 COPY components ./components
-COPY .next ./next_build
 COPY hooks ./hooks
 COPY lib ./lib
 COPY tsconfig.json ./
